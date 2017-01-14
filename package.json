@@ -1,0 +1,12 @@
+{
+  "name": "web-midi-api-experiments",
+  "version": "1.0.0",
+  "description": "Experimenting with Web MIDI API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Frank van Wijk <fvanwijk@xebia.com> (http://www.frankvanwijk.nl)",
+  "license": "MIT"
+}
