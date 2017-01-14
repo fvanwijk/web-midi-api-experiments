@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Audio API</title>
+  <script src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body id="app">
+<input type="text" v-model="test">
+  <input type="range" v-on:input="setFrequency" number /> {{ freq.frequency.value }}
+  <input type="range" v-on:input="setGain" number /> {{ gainNode.gain.value }}
+  <div>
+    <button id="mute" v-on:click="toggleMute">Mute</button>
+  </div>
+
+<select name="visualSelect" id="visualSelect" class="visualSelect">
+  <option value="sinewave">Sine</option>
+  <option value="frequencybars">Frequency spectrum</option>
+  <option value="off">Off</option>
+</select>
+<canvas class="visualizer" width="640" height="200"></canvas>
+
+<script src="scripts.js"></script>
+</body>
+</html>

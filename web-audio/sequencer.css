@@ -1,0 +1,32 @@
+.loops ul {
+    list-style: none;
+    margin: 0;
+}
+
+.loops ul li {
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    background: #ccc;
+    margin-right: 10px;
+    height: 30px;
+    width: 50px;
+}
+ul li.playing {
+    background: #ddd;
+}
+ul li.active {
+    border-color: #cc0000;
+}
+.active ul li.active.playing {
+    background: #ee0000;
+}
+
+.actions button {
+    background: white;
+    border: 1px solid black;
+}
+.actions button.active {
+    background: #ccc;
+}
