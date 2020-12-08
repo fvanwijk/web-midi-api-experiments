@@ -15,6 +15,7 @@ export default {
       return { [NOTE_ON]: 'Note on', [NOTE_OFF]: 'Note off' }[this.event.data[0]];
     },
     pitch() {
+      console.log(this.event);
       return this.event.data[1];
     },
     velocity() {
