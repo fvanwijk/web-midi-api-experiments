@@ -4,8 +4,8 @@
   </div>
 </template>
 <script>
-const NOTE_ON = 144;
-const NOTE_OFF = 128;
+const NOTE_ON = 0x90;
+const NOTE_OFF = 0x80;
 
 export default {
   name: 'LogLine',

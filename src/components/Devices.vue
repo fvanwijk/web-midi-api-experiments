@@ -13,9 +13,20 @@
         </tr>
       </tbody>
     </table>
+
     {{ error }}
-    <h2>Log of inputs</h2>
-    <Log :log="log" />
+
+    <div class="grid">
+      <div>
+        <h2>Log of inputs</h2>
+        <Log :log="log" />
+      </div>
+      <div>
+        <h2>Send midi message</h2>
+
+        <SendMessage :midiOut="outputs?.[0]" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,10 +34,11 @@
 import { onMounted, ref } from 'vue';
 import Input from './Input';
 import Log from './Log';
+import SendMessage from './SendMessage';
 
 export default {
   name: 'Devices',
-  components: { Input, Log },
+  components: { Input, Log, SendMessage },
   props: {
     msg: String,
   },
@@ -69,6 +81,11 @@ export default {
 <style scoped>
 .container {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 1440px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: auto auto;
 }
 </style>
