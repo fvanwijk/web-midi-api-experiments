@@ -51,8 +51,9 @@ export default {
     function sendMidiMessageWebSocket(duration) {
       const [msgOn, msgOff] = createMidiMessagePair();
 
+      console.log('send on', msgOn);
       ws.value.send(msgOn);
-      console.log('send on');
+
       setTimeout(() => {
         console.log('send off', msgOff);
         ws.value.send(msgOff);
