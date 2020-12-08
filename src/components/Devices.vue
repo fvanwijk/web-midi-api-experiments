@@ -14,16 +14,19 @@
       </tbody>
     </table>
     {{ error }}
+    <h2>Log of inputs</h2>
+    <Log :log="log" />
   </div>
 </template>
 
 <script>
 import { onMounted, ref } from 'vue';
 import Input from './Input';
+import Log from './Log';
 
 export default {
   name: 'Devices',
-  components: { Input },
+  components: { Input, Log },
   props: {
     msg: String,
   },
@@ -39,19 +42,25 @@ export default {
     const error = ref();
     const inputs = ref();
     const outputs = ref();
+    const log = ref([]);
 
     onMounted(async () => {
       try {
         const res = await connect();
         inputs.value = Array.from(res.inputs.values());
-        console.log(inputs.value[0]);
+        for (let input of res.inputs.values()) {
+          input.addEventListener('midimessage', e => {
+            log.value.push(e);
+          });
+        }
         outputs.value = Array.from(res.outputs.values());
       } catch (e) {
+        console.log(e);
         error.value = 'Could not get MIDI access';
       }
     });
 
-    return { connect, error, inputs, outputs };
+    return { connect, error, inputs, log, outputs };
   },
 };
 </script>

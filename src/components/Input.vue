@@ -8,9 +8,6 @@
 export default {
   name: 'Input',
   props: ['value'],
-  setup(props) {
-    console.log(props.value);
-  },
 };
 </script>
 <style scoped>
