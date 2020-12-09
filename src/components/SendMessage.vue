@@ -1,17 +1,30 @@
 <template>
   <div>
-    <div>
-      <div>Pitch <input v-model="pitch" /></div>
-      <div>Velocity <input v-model="velocity" /></div>
-      <div>Duration (ms) <input v-model="duration" /></div>
-    </div>
+    <table class="mb-4">
+      <tr>
+        <th><label for="pitch">Pitch (60 is Middle C)</label></th>
+        <td><input id="pitch" type="number" v-model="pitch" /></td>
+      </tr>
+      <tr>
+        <th><label for="velocity">Velocity (0-127)</label></th>
+        <td>
+          <input id="velocity" type="number" v-model="velocity" />
+        </td>
+      </tr>
+      <tr>
+        <th><label for="duration">Duration (ms)</label></th>
+        <td><input id="duration" type="number" v-model="duration" /></td>
+      </tr>
+    </table>
 
-    <button type="submit" @click="sendMidiMessage(duration)">Send direct</button>
+    <button type="submit" @click="sendMidiMessage(duration)" class="mr-2">Send direct</button>
     <button type="submit" @click="sendMidiMessageWebSocket(duration)">Send WS</button>
   </div>
 </template>
 <script>
 import { ref } from 'vue';
+
+import { useWebSocketConnection } from './useWebSocketConnection';
 
 export default {
   name: 'SendMessage',
@@ -21,13 +34,9 @@ export default {
     const pitch = ref(52);
     const velocity = ref(100);
 
-    const ws = ref(new WebSocket('ws://35.233.20.180:8080/'));
-    ws.value.addEventListener('open', () => {
-      console.log('websocket connection opened');
-    });
+    const { ws } = useWebSocketConnection();
     ws.value.addEventListener('message', async msg => {
-      const text = await msg.data.arrayBuffer();
-      console.log('MESSAGE RECEIVED', text);
+      console.log('MESSAGE RECEIVED', msg.data);
     });
 
     function createMidiMessagePair() {
@@ -64,3 +73,8 @@ export default {
   },
 };
 </script>
+<style scoped lang="postcss">
+.form {
+  grid-template-columns: 140px 80px;
+}
+</style>

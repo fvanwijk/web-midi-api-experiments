@@ -1,13 +1,20 @@
 <template>
-  <div>
-    <em>{{ value.name }}</em>
-    <span :class="{ state: true, connected: value.state === 'connected' }">{{ value.state }}</span>
-  </div>
+  <select :disabled="empty">
+    <option v-if="empty">No {{ type }}s detected</option>
+    <option v-for="(value, i) in values" :key="i">
+      {{ value.state === 'connected' ? '🟢' : '🔴' }} {{ value.name }}
+    </option>
+  </select>
 </template>
 <script>
+import { computed } from 'vue';
+
 export default {
   name: 'Input',
-  props: ['value'],
+  props: ['values', 'type'],
+  setup(props) {
+    return { empty: computed(() => !props.values?.length) };
+  },
 };
 </script>
 <style scoped>
