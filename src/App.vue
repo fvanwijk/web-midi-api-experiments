@@ -6,11 +6,25 @@
         <tbody>
           <tr>
             <th>Inputs</th>
-            <td><Input type="input" :values="inputs" /></td>
+            <td>
+              <Select
+                type="input"
+                :options="inputOptions"
+                :value="selectedIn"
+                @input="selectedIn = $event.target.value"
+              />
+            </td>
           </tr>
           <tr>
             <th>Outputs</th>
-            <td><Input type="output" :values="outputs" /></td>
+            <td>
+              <Select
+                type="output"
+                :options="outputOptions"
+                :value="selectedOut"
+                @input="selectedOut = $event.target.value"
+              />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -28,21 +42,21 @@
       </div>
       <div>
         <h2 class="text-2xl font-bold mb-4">Send midi message</h2>
-        <SendMessage :midiOut="outputs?.[0]" />
+        <SendMessage :selectedOutput="selectedOutput" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
-import Input from './components/Input';
+import { computed, onMounted, ref } from 'vue';
 import Log from './components/Log';
+import Select from './components/Select';
 import SendMessage from './components/SendMessage';
 
 export default {
   name: 'Devices',
-  components: { Input, Log, SendMessage },
+  components: { Log, Select, SendMessage },
   props: {
     msg: String,
   },
@@ -56,27 +70,50 @@ export default {
     }
 
     const error = ref();
-    const inputs = ref([]);
-    const outputs = ref([]);
+
+    const inputs = ref([{ name: 'a', state: 'connected' }, { name: 'b' }]);
+    const inputOptions = computed(() => Array.from(inputs.value)); // .values()
+    const selectedIn = ref();
+    const selectedInput = computed(() => inputs.value.find(o => o.name === selectedIn.value));
+
+    const outputs = ref([{ name: 'x' }, { name: 'y' }]);
+    const outputOptions = computed(() => Array.from(outputs.value)); // .values()
+    const selectedOut = ref();
+    const selectedOutput = computed(() => outputs.value.find(o => o.name === selectedOut.value));
+
     const log = ref([]);
 
     onMounted(async () => {
       try {
         const res = await connect();
-        inputs.value = Array.from(res.inputs.values());
+
+        //inputs.value = res.inputs;
         for (let input of res.inputs.values()) {
           input.addEventListener('midimessage', e => {
             log.value.push(e);
           });
         }
-        outputs.value = Array.from(res.outputs.values());
+
+        //outputs.value = res.outputs.values();
       } catch (e) {
         console.log(e);
         error.value = 'Could not get MIDI access';
       }
     });
 
-    return { connect, error, inputs, log, outputs };
+    return {
+      connect,
+      error,
+      inputs,
+      inputOptions,
+      log,
+      outputs,
+      outputOptions,
+      selectedIn,
+      selectedInput,
+      selectedOut,
+      selectedOutput,
+    };
   },
 };
 </script>

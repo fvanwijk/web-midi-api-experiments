@@ -28,7 +28,7 @@ import { useWebSocketConnection } from './useWebSocketConnection';
 
 export default {
   name: 'SendMessage',
-  props: ['midiOut', 'selectOut'],
+  props: ['selectedOutput'],
   setup(props) {
     const duration = ref(200);
     const pitch = ref(52);
@@ -52,7 +52,7 @@ export default {
     function sendMidiMessage(duration) {
       const [msgOn, msgOff] = createMidiMessagePair();
 
-      const device = props.midiOut;
+      const device = props.selectedOutput;
       device.send(msgOn);
       device.send(msgOff, Date.now() + duration);
     }
